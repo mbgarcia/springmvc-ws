@@ -6,8 +6,8 @@
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
 		<version>2.1.1.RELEASE</version>
-		<relativePath /> <!-- lookup parent from repository -->
 	</parent>
+	
 	<groupId>com.appsdeveloperblog.app.ws</groupId>
 	<artifactId>mobile-app-ws-marcelo</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
@@ -38,6 +38,17 @@
 		<dependency>
 			<groupId>org.postgresql</groupId>
 			<artifactId>postgresql</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-security</artifactId>
+		</dependency>
+		
+		<dependency>
+			<groupId>io.jsonwebtoken</groupId>
+			<artifactId>jjwt</artifactId>
+			<version>0.9.1</version>
 		</dependency>
 
 		<dependency>

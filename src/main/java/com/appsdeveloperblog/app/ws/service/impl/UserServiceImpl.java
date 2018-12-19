@@ -56,4 +56,13 @@ public class UserServiceImpl implements UserService{
 		
 		return new User(user.getEmail(), user.getEncryptedPassword(), new ArrayList<>());
 	}
+	
+	public String getPublicId(String email){
+		UserEntity user = repository.findByEmail(email);
+		
+		if (user == null)
+			throw new UsernameNotFoundException(email);
+		
+		return user.getUserId();
+	}
 }

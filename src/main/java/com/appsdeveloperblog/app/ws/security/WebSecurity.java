@@ -1,5 +1,7 @@
 package com.appsdeveloperblog.app.ws.security;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -11,6 +13,8 @@ import com.appsdeveloperblog.app.ws.service.UserService;
 
 @EnableWebSecurity
 public class WebSecurity extends WebSecurityConfigurerAdapter {
+	private static Logger logger = LoggerFactory.getLogger(WebSecurity.class);
+	
     private final UserService userDetailsService;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
@@ -21,10 +25,13 @@ public class WebSecurity extends WebSecurityConfigurerAdapter {
     
     @Override
     protected void configure(HttpSecurity http) throws Exception {
+    	logger.info("CONFIGURE SECURITY");
+    	
         http.csrf().disable().authorizeRequests()
-        .antMatchers(HttpMethod.POST, "/users")
+        .antMatchers(HttpMethod.POST, SecurityConstants.SIGN_UP_URL)
         .permitAll()
-        .anyRequest().authenticated();
+        .anyRequest().authenticated()
+        .and().addFilter(new AuthenticationFilter(authenticationManager()));
     }
 
     @Override

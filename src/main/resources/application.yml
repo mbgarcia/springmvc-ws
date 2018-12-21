@@ -13,3 +13,5 @@ spring:
   jpa:
     database-platform: org.hibernate.dialect.PostgreSQL9Dialect
     
+token.secret: jf9i4jgu83nfl0
+    

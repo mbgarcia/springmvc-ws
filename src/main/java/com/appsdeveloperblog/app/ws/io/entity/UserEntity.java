@@ -4,6 +4,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.Transient;
 
 @Entity(name="users")
 public class UserEntity {
@@ -23,6 +24,9 @@ public class UserEntity {
 	
 	@Column(nullable=false, length=100, unique=true)
 	private String email;
+	
+	@Transient
+	private String password;
 	
 	@Column(nullable=false, length=200)
 	private String encryptedPassword;
@@ -95,5 +99,13 @@ public class UserEntity {
 
 	public void setEmailVerificationStatus(Boolean emailVerificationStatus) {
 		this.emailVerificationStatus = emailVerificationStatus;
-	}	
+	}
+
+	public String getPassword() {
+		return password;
+	}
+
+	public void setPassword(String password) {
+		this.password = password;
+	}
 }

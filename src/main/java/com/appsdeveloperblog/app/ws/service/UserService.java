@@ -39,6 +39,16 @@ public class UserService implements UserDetailsService{
 		return storedUser;
 	}
 	
+	public UserEntity updateUser(String publicId, UserEntity user) {
+		UserEntity entity = findUserByPublicId(publicId);
+		
+		entity.setLastName(user.getLastName());
+		entity.setFirstName(user.getFirstName());
+		
+		UserEntity storedUser = repository.save(entity);
+		
+		return storedUser;
+	}
 	public UserEntity findUserByPublicId(String publicId) {
 		UserEntity user = repository.findByUserId(publicId);
 		

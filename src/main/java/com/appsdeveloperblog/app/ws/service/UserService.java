@@ -10,6 +10,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import com.appsdeveloperblog.app.ws.exception.UserNotFoundException;
 import com.appsdeveloperblog.app.ws.io.entity.UserEntity;
 import com.appsdeveloperblog.app.ws.repository.UserRepository;
 import com.appsdeveloperblog.app.ws.shared.Utils;
@@ -42,7 +43,7 @@ public class UserService implements UserDetailsService{
 		UserEntity user = repository.findByUserId(publicId);
 		
 		if (user == null)
-			throw new UsernameNotFoundException(publicId);
+			throw new UserNotFoundException(publicId);
 		
 		return user;
 	}	

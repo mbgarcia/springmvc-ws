@@ -1,5 +1,7 @@
 package com.appsdeveloperblog.app.ws.io.entity;
 
+import java.time.LocalDateTime;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -36,6 +38,12 @@ public class UserEntity {
 	
 	@Column(nullable=false)
 	private Boolean emailVerificationStatus = false;
+	
+	@Column(nullable=true)
+	private Boolean deleted;
+	
+	@Column(nullable=true)
+	private LocalDateTime deletedAt;
 
 	public Long getId() {
 		return id;
@@ -107,5 +115,21 @@ public class UserEntity {
 
 	public void setPassword(String password) {
 		this.password = password;
+	}
+
+	public Boolean getDeleted() {
+		return deleted;
+	}
+
+	public void setDeleted(Boolean deleted) {
+		this.deleted = deleted;
+	}
+
+	public LocalDateTime getDeletedAt() {
+		return deletedAt;
+	}
+
+	public void setDeletedAt(LocalDateTime deletedAt) {
+		this.deletedAt = deletedAt;
 	}
 }

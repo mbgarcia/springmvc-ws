@@ -1,6 +1,6 @@
 package com.appsdeveloperblog.app.ws.ui.model.response;
 
-public class UserRest {
+public class UserControllerResponse {
 	private String userId;
 	
 	private String firstName;

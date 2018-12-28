@@ -1,5 +1,6 @@
 package com.appsdeveloperblog.app.ws.service;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +15,7 @@ import com.appsdeveloperblog.app.ws.exception.UserNotFoundException;
 import com.appsdeveloperblog.app.ws.io.entity.UserEntity;
 import com.appsdeveloperblog.app.ws.repository.UserRepository;
 import com.appsdeveloperblog.app.ws.shared.Utils;
+import com.appsdeveloperblog.app.ws.ui.model.request.UserUpdateRequestModel;
 
 @Service
 public class UserService implements UserDetailsService{
@@ -39,7 +41,7 @@ public class UserService implements UserDetailsService{
 		return storedUser;
 	}
 	
-	public UserEntity updateUser(String publicId, UserEntity user) {
+	public UserEntity updateUser(String publicId, UserUpdateRequestModel user) {
 		UserEntity entity = findUserByPublicId(publicId);
 		
 		entity.setLastName(user.getLastName());
@@ -49,6 +51,16 @@ public class UserService implements UserDetailsService{
 		
 		return storedUser;
 	}
+	
+	public void deleteUser(String publicId){
+		UserEntity entity = findUserByPublicId(publicId);
+		
+		entity.setDeleted(true);
+		entity.setDeletedAt(LocalDateTime.now());
+		
+		repository.save(entity);
+	}
+	
 	public UserEntity findUserByPublicId(String publicId) {
 		UserEntity user = repository.findByUserId(publicId);
 		

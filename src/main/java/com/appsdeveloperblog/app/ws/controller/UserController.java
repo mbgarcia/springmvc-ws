@@ -15,7 +15,8 @@ import org.springframework.web.bind.annotation.RestController;
 import com.appsdeveloperblog.app.ws.io.entity.UserEntity;
 import com.appsdeveloperblog.app.ws.service.UserService;
 import com.appsdeveloperblog.app.ws.ui.model.request.UserDetailsRequestModel;
-import com.appsdeveloperblog.app.ws.ui.model.response.UserRest;
+import com.appsdeveloperblog.app.ws.ui.model.request.UserUpdateRequestModel;
+import com.appsdeveloperblog.app.ws.ui.model.response.UserControllerResponse;
 
 @RestController
 @RequestMapping("/users")
@@ -26,8 +27,8 @@ public class UserController {
 	
 	@GetMapping(path="/{publicId}"
 			,produces={MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_JSON_VALUE})
-	public UserRest getUser(@PathVariable String publicId){
-		UserRest returnValue = new UserRest();
+	public UserControllerResponse getUser(@PathVariable String publicId){
+		UserControllerResponse returnValue = new UserControllerResponse();
 		
 		UserEntity dto = userService.findUserByPublicId(publicId);
 		
@@ -39,8 +40,8 @@ public class UserController {
 	@PostMapping(
 			 consumes={MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_JSON_VALUE}
 			,produces={MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_JSON_VALUE})
-	public UserRest createUser(@RequestBody UserDetailsRequestModel userDetails){
-		UserRest returnValue = new UserRest();
+	public UserControllerResponse createUser(@RequestBody UserDetailsRequestModel userDetails){
+		UserControllerResponse returnValue = new UserControllerResponse();
 		
 		UserEntity user = new UserEntity();
 		BeanUtils.copyProperties(userDetails, user);
@@ -55,21 +56,17 @@ public class UserController {
 			,consumes={MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_JSON_VALUE}
 			,produces={MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_JSON_VALUE}			
 			)
-	public UserRest updateUser(@PathVariable String publicId, @RequestBody UserDetailsRequestModel userDetails){
-		UserRest returnValue = new UserRest();
+	public UserControllerResponse updateUser(@PathVariable String publicId, @RequestBody UserUpdateRequestModel userDetails){
+		UserControllerResponse returnValue = new UserControllerResponse();
 		
-		UserEntity user = new UserEntity();
-		BeanUtils.copyProperties(userDetails, user);
-		
-		UserEntity createdUser = userService.updateUser(publicId, user);
+		UserEntity createdUser = userService.updateUser(publicId, userDetails);
 		BeanUtils.copyProperties(createdUser, returnValue);
 		
 		return returnValue;
 	}
 	
-	@DeleteMapping
-	public String deleteUser(){
-		return "delete user was called";
+	@DeleteMapping(path="/{publicId}")
+	public void deleteUser(@PathVariable String publicId){
+		userService.deleteUser(publicId);
 	}
-	
 }

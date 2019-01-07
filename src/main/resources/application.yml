@@ -5,8 +5,7 @@ spring.datasource.username: postgres
 spring.datasource.password: p0stgr@s
 spring.datasource.platform: postgres
 spring.datasource.driverClassName: "org.postgresql.Driver"
-spring.datasource.url: "jdbc:postgresql://localhost:5432/photo_app"
-#jdbc:postgresql://aamy5a4lc05zp3.cbsij99mx1w9.sa-east-1.rds.amazonaws.com:5432/aamy5a4lc05zp3
+spring.datasource.url: "jdbc:postgresql://localhost:5432/curso"
 spring.jpa.database: "POSTGRESQL"
 spring.jpa.show-sql: true
 spring.jpa.hibernate.ddl-auto: update

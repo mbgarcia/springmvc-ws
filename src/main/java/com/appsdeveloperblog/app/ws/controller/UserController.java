@@ -1,9 +1,11 @@
 package com.appsdeveloperblog.app.ws.controller;
 
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 
 import org.modelmapper.ModelMapper;
+import org.modelmapper.TypeToken;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -17,8 +19,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.appsdeveloperblog.app.ws.io.entity.AddressEntity;
 import com.appsdeveloperblog.app.ws.io.entity.UserEntity;
+import com.appsdeveloperblog.app.ws.service.AddressService;
 import com.appsdeveloperblog.app.ws.service.UserService;
+import com.appsdeveloperblog.app.ws.ui.model.request.AddressDto;
 import com.appsdeveloperblog.app.ws.ui.model.request.UserRequestDto;
 import com.appsdeveloperblog.app.ws.ui.model.request.UserUpdateRequestModel;
 import com.appsdeveloperblog.app.ws.ui.model.response.UserResponseDto;
@@ -29,6 +34,9 @@ public class UserController {
 	
 	@Autowired
 	UserService userService;
+	
+	@Autowired
+	AddressService addressService;
 	
 	@GetMapping(path="/{publicId}"
 			,produces={MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_JSON_VALUE})
@@ -77,16 +85,21 @@ public class UserController {
 	
 	@GetMapping(produces={MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_JSON_VALUE})
 	public List<UserResponseDto> getUsers(@RequestParam(defaultValue="1") int page, @RequestParam(defaultValue="10") int limit){
-		List<UserResponseDto> list = new ArrayList<UserResponseDto>();
-		
 		List<UserEntity> users = userService.getUsers(page, limit);
 		
-		users.stream().forEach(user -> {
-			UserResponseDto item = new UserResponseDto();
-			BeanUtils.copyProperties(user, item);
-			list.add(item);
-		});
-		
-		return list;
+		Type listType = new TypeToken<List<UserResponseDto>>() {}.getType();
+				
+		return new ModelMapper().map(users, listType);
 	}
+	
+	@GetMapping(path="/{publicId}/addresses"
+			,produces={MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_JSON_VALUE})
+	public List<AddressDto> getUserAddresses(@PathVariable String publicId){
+		List<AddressEntity> list = addressService.listUserAddresses(publicId);
+		
+		Type listType = new TypeToken<List<AddressDto>>() {}.getType();
+		
+		return new ModelMapper().map(list, listType);
+	}
+	
 }

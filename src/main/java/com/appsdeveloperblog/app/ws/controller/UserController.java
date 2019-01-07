@@ -3,6 +3,7 @@ package com.appsdeveloperblog.app.ws.controller;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -18,9 +19,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.appsdeveloperblog.app.ws.io.entity.UserEntity;
 import com.appsdeveloperblog.app.ws.service.UserService;
-import com.appsdeveloperblog.app.ws.ui.model.request.UserDetailsRequestModel;
+import com.appsdeveloperblog.app.ws.ui.model.request.UserRequestDto;
 import com.appsdeveloperblog.app.ws.ui.model.request.UserUpdateRequestModel;
-import com.appsdeveloperblog.app.ws.ui.model.response.UserControllerResponse;
+import com.appsdeveloperblog.app.ws.ui.model.response.UserResponseDto;
 
 @RestController
 @RequestMapping("/users")
@@ -31,8 +32,8 @@ public class UserController {
 	
 	@GetMapping(path="/{publicId}"
 			,produces={MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_JSON_VALUE})
-	public UserControllerResponse getUser(@PathVariable String publicId){
-		UserControllerResponse returnValue = new UserControllerResponse();
+	public UserResponseDto getUser(@PathVariable String publicId){
+		UserResponseDto returnValue = new UserResponseDto();
 		
 		UserEntity dto = userService.findUserByPublicId(publicId);
 		
@@ -44,14 +45,14 @@ public class UserController {
 	@PostMapping(
 			 consumes={MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_JSON_VALUE}
 			,produces={MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_JSON_VALUE})
-	public UserControllerResponse createUser(@RequestBody UserDetailsRequestModel userDetails){
-		UserControllerResponse returnValue = new UserControllerResponse();
+	public UserResponseDto createUser(@RequestBody UserRequestDto userDetails){
+		UserResponseDto returnValue = new UserResponseDto();
 		
-		UserEntity user = new UserEntity();
-		BeanUtils.copyProperties(userDetails, user);
+		ModelMapper modelMapper = new ModelMapper();
+		UserEntity user = modelMapper.map(userDetails, UserEntity.class);
 		
 		UserEntity createdUser = userService.createUser(user);
-		BeanUtils.copyProperties(createdUser, returnValue);
+		returnValue = modelMapper.map(createdUser, UserResponseDto.class);
 		
 		return returnValue;
 	}
@@ -60,8 +61,8 @@ public class UserController {
 			,consumes={MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_JSON_VALUE}
 			,produces={MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_JSON_VALUE}			
 			)
-	public UserControllerResponse updateUser(@PathVariable String publicId, @RequestBody UserUpdateRequestModel userDetails){
-		UserControllerResponse returnValue = new UserControllerResponse();
+	public UserResponseDto updateUser(@PathVariable String publicId, @RequestBody UserUpdateRequestModel userDetails){
+		UserResponseDto returnValue = new UserResponseDto();
 		
 		UserEntity createdUser = userService.updateUser(publicId, userDetails);
 		BeanUtils.copyProperties(createdUser, returnValue);
@@ -75,13 +76,13 @@ public class UserController {
 	}
 	
 	@GetMapping(produces={MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_JSON_VALUE})
-	public List<UserControllerResponse> getUsers(@RequestParam(defaultValue="1") int page, @RequestParam(defaultValue="10") int limit){
-		List<UserControllerResponse> list = new ArrayList<UserControllerResponse>();
+	public List<UserResponseDto> getUsers(@RequestParam(defaultValue="1") int page, @RequestParam(defaultValue="10") int limit){
+		List<UserResponseDto> list = new ArrayList<UserResponseDto>();
 		
 		List<UserEntity> users = userService.getUsers(page, limit);
 		
 		users.stream().forEach(user -> {
-			UserControllerResponse item = new UserControllerResponse();
+			UserResponseDto item = new UserResponseDto();
 			BeanUtils.copyProperties(user, item);
 			list.add(item);
 		});

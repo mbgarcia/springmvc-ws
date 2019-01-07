@@ -1,21 +1,18 @@
-package com.appsdeveloperblog.app.ws.ui.model.response;
+package com.appsdeveloperblog.app.ws.ui.model.request;
 
-public class UserControllerResponse {
-	private String userId;
+import java.util.List;
+
+public class UserRequestDto {
 	
 	private String firstName;
 	
 	private String lastName;
 	
 	private String email;
-
-	public String getUserId() {
-		return userId;
-	}
-
-	public void setUserId(String userId) {
-		this.userId = userId;
-	}
+	
+	private String password;
+	
+	private List<AddressDto> addresses;
 
 	public String getFirstName() {
 		return firstName;
@@ -39,5 +36,21 @@ public class UserControllerResponse {
 
 	public void setEmail(String email) {
 		this.email = email;
+	}
+
+	public String getPassword() {
+		return password;
+	}
+
+	public void setPassword(String password) {
+		this.password = password;
+	}
+
+	public List<AddressDto> getAddresses() {
+		return addresses;
+	}
+
+	public void setAddresses(List<AddressDto> addresses) {
+		this.addresses = addresses;
 	}	
 }

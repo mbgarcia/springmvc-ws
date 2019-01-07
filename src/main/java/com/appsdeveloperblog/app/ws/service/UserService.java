@@ -39,6 +39,7 @@ public class UserService implements UserDetailsService {
 
 		user.setEncryptedPassword(passwordEncoder.encode(user.getPassword()));
 		user.setUserId(utils.generateUserId(20));
+		user.getAddresses().stream().forEach(ad -> {ad.setUser(user);});
 
 		UserEntity storedUser = repository.save(user);
 

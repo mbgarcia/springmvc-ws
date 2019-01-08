@@ -40,13 +40,9 @@ public class UserController {
 	@GetMapping(path="/{publicId}"
 			,produces={MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_JSON_VALUE})
 	public UserControlerResponse getUser(@PathVariable String publicId){
-		UserControlerResponse returnValue = new UserControlerResponse();
-		
 		UserEntity dto = userService.findUserByPublicId(publicId);
 		
-		BeanUtils.copyProperties(dto, returnValue);
-		
-		return returnValue;
+		return new ModelMapper().map(dto, UserControlerResponse.class);
 	}
 
 	@PostMapping(

@@ -52,9 +52,7 @@ public class UserService implements UserDetailsService {
 		entity.setLastName(user.getLastName());
 		entity.setFirstName(user.getFirstName());
 
-		UserEntity storedUser = repository.save(entity);
-
-		return storedUser;
+		return  repository.save(entity);
 	}
 
 	public void deleteUser(String publicId) {

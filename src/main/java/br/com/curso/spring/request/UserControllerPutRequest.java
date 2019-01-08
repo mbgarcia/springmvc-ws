@@ -1,6 +1,6 @@
 package br.com.curso.spring.request;
 
-public class UserControllerUpdateRequest {
+public class UserControllerPutRequest {
 	
 	private String firstName;
 	

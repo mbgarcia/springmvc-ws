@@ -2,7 +2,7 @@ package br.com.curso.spring.request;
 
 import java.util.List;
 
-public class UserControllerRequest {
+public class UserControllerPostRequest {
 	
 	private String firstName;
 	

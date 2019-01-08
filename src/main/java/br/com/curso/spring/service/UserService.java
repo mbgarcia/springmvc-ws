@@ -17,7 +17,7 @@ import org.springframework.stereotype.Service;
 import br.com.curso.spring.exception.UserNotFoundException;
 import br.com.curso.spring.io.entity.UserEntity;
 import br.com.curso.spring.repository.UserRepository;
-import br.com.curso.spring.request.UserControllerUpdateRequest;
+import br.com.curso.spring.request.UserControllerPutRequest;
 import br.com.curso.spring.shared.Utils;
 
 @Service
@@ -46,7 +46,7 @@ public class UserService implements UserDetailsService {
 		return storedUser;
 	}
 
-	public UserEntity updateUser(String publicId, UserControllerUpdateRequest user) {
+	public UserEntity updateUser(String publicId, UserControllerPutRequest user) {
 		UserEntity entity = findUserByPublicId(publicId);
 
 		entity.setLastName(user.getLastName());

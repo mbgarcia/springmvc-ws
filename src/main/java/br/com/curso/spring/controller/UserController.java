@@ -21,9 +21,9 @@ import org.springframework.web.bind.annotation.RestController;
 import br.com.curso.spring.io.entity.AddressEntity;
 import br.com.curso.spring.io.entity.UserEntity;
 import br.com.curso.spring.request.AddressDto;
-import br.com.curso.spring.request.UserControllerRequest;
-import br.com.curso.spring.request.UserControllerUpdateRequest;
-import br.com.curso.spring.response.UserResponseDto;
+import br.com.curso.spring.request.UserControllerPostRequest;
+import br.com.curso.spring.request.UserControllerPutRequest;
+import br.com.curso.spring.response.UserControlerResponse;
 import br.com.curso.spring.service.AddressService;
 import br.com.curso.spring.service.UserService;
 
@@ -39,8 +39,8 @@ public class UserController {
 	
 	@GetMapping(path="/{publicId}"
 			,produces={MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_JSON_VALUE})
-	public UserResponseDto getUser(@PathVariable String publicId){
-		UserResponseDto returnValue = new UserResponseDto();
+	public UserControlerResponse getUser(@PathVariable String publicId){
+		UserControlerResponse returnValue = new UserControlerResponse();
 		
 		UserEntity dto = userService.findUserByPublicId(publicId);
 		
@@ -52,24 +52,21 @@ public class UserController {
 	@PostMapping(
 			 consumes={MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_JSON_VALUE}
 			,produces={MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_JSON_VALUE})
-	public UserResponseDto createUser(@RequestBody UserControllerRequest userDetails){
-		UserResponseDto returnValue = new UserResponseDto();
-		
+	public UserControlerResponse createUser(@RequestBody UserControllerPostRequest userDetails){
 		ModelMapper modelMapper = new ModelMapper();
 		UserEntity user = modelMapper.map(userDetails, UserEntity.class);
 		
 		UserEntity createdUser = userService.createUser(user);
-		returnValue = modelMapper.map(createdUser, UserResponseDto.class);
 		
-		return returnValue;
+		return modelMapper.map(createdUser, UserControlerResponse.class);
 	}
 	
 	@PutMapping(path="/{publicId}"
 			,consumes={MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_JSON_VALUE}
 			,produces={MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_JSON_VALUE}			
 			)
-	public UserResponseDto updateUser(@PathVariable String publicId, @RequestBody UserControllerUpdateRequest userDetails){
-		UserResponseDto returnValue = new UserResponseDto();
+	public UserControlerResponse updateUser(@PathVariable String publicId, @RequestBody UserControllerPutRequest userDetails){
+		UserControlerResponse returnValue = new UserControlerResponse();
 		
 		UserEntity createdUser = userService.updateUser(publicId, userDetails);
 		BeanUtils.copyProperties(createdUser, returnValue);
@@ -83,10 +80,10 @@ public class UserController {
 	}
 	
 	@GetMapping(produces={MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_JSON_VALUE})
-	public List<UserResponseDto> getUsers(@RequestParam(defaultValue="1") int page, @RequestParam(defaultValue="10") int limit){
+	public List<UserControlerResponse> getUsers(@RequestParam(defaultValue="1") int page, @RequestParam(defaultValue="10") int limit){
 		List<UserEntity> users = userService.getUsers(page, limit);
 		
-		Type listType = new TypeToken<List<UserResponseDto>>() {}.getType();
+		Type listType = new TypeToken<List<UserControlerResponse>>() {}.getType();
 				
 		return new ModelMapper().map(users, listType);
 	}

@@ -4,7 +4,7 @@ import java.util.List;
 
 import br.com.curso.spring.request.AddressDto;
 
-public class UserResponseDto {
+public class UserControlerResponse {
 	private String userId;
 	
 	private String firstName;
